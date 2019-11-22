@@ -1,22 +1,28 @@
 <template>
     <div id="app">
-        <button @click="switchLanguage">切换</button>
-        <count-down></count-down>
+        <el-button @click="switchLanguage">{{$t('m.switchLanguage')}}</el-button>
+        <el-button @click="addTaskCard"><i class="el-icon-plus"></i></el-button>
+        <div class="router">
+            <router-view/>
+        </div>
+
     </div>
 </template>
 
 <script>
-    import countDown from "./components/countDown";
 
     export default {
         name: 'app',
         components: {
-            countDown
+
         },
         methods: {
             switchLanguage() {
                 let m = this.$i18n.locale === 'zh' ? 'en' : 'zh';
                 this.$i18n.locale = m
+            },
+            addTaskCard(){
+                this.$router.push("/addTaskCard")
             }
         }
     }
