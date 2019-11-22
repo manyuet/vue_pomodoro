@@ -1,28 +1,34 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app">
+        <button @click="switchLanguage">切换</button>
+        <count-down></count-down>
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+    import countDown from "./components/countDown";
 
-export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
+    export default {
+        name: 'app',
+        components: {
+            countDown
+        },
+        methods: {
+            switchLanguage() {
+                let m = this.$i18n.locale === 'zh' ? 'en' : 'zh';
+                this.$i18n.locale = m
+            }
+        }
+    }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+#app{
+    max-width: 1080px;
+    min-width: 1080px;
+    max-height: 900px;
+    min-height: 900px;
+    margin-left: auto;
+    margin-right: auto;
 }
 </style>
