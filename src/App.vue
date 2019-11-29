@@ -1,7 +1,6 @@
 <template>
     <div id="app">
-        <el-button @click="switchLanguage">{{$t('m.switchLanguage')}}</el-button>
-        <el-button @click="addTaskCard"><i class="el-icon-plus"></i></el-button>
+        <top-nav-bar></top-nav-bar>
         <div class="router">
             <router-view/>
         </div>
@@ -11,30 +10,27 @@
 
 <script>
 
+    import TopNavBar from "./components/topNavBar";
+
     export default {
         name: 'app',
         components: {
+            TopNavBar
 
         },
-        methods: {
-            switchLanguage() {
-                let m = this.$i18n.locale === 'zh' ? 'en' : 'zh';
-                this.$i18n.locale = m
-            },
-            addTaskCard(){
-                this.$router.push("/addTaskCard")
-            }
-        }
+        methods: {}
     }
 </script>
 
-<style>
-#app{
-    max-width: 1080px;
-    min-width: 1080px;
-    max-height: 900px;
-    min-height: 900px;
-    margin-left: auto;
-    margin-right: auto;
-}
+<style scoped>
+    #app {
+        /*max-width: 1080px;*/
+        /*min-width: 1080px;*/
+        /*max-height: 900px;*/
+        /*min-height: 900px;*/
+        margin-left: auto;
+        margin-right: auto;
+        background-color: rgb(241, 242, 244);
+        /*margin-top: 50px;*/
+    }
 </style>

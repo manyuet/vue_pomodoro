@@ -11,6 +11,10 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from './store'
 import VueI18n from 'vue-i18n'
+import {faLanguage, faPlusCircle, faSmile} from "@fortawesome/free-solid-svg-icons";
+import {faCircle} from "@fortawesome/free-solid-svg-icons/faCircle";
+import {faTrashAlt} from "@fortawesome/free-solid-svg-icons/faTrashAlt";
+import {faPenSquare} from "@fortawesome/free-solid-svg-icons/faPenSquare";
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.config.productionTip = false;
@@ -26,6 +30,12 @@ const i18n =new VueI18n({
 
 library.add(
     //font awesome
+    faLanguage,
+    faPlusCircle,
+    faSmile,
+    faCircle,
+    faTrashAlt,
+    faPenSquare
 );
 
 Vue.use(ElementUI);
