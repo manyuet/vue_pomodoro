@@ -64,14 +64,14 @@ export default {
         })
       })
     },
-    append(tag, label) {
-      const newChild = { id: id++, label: label, children: [] }
-      if (!tag.children) {
-        this.$set(tag, 'children', [])
+    append(tag, label) { // 拿到节点跟插入的数据
+      const newChild = { id: id++, label: label, children: [] } // 为新节点初始化数据
+      if (!tag.children) { // 判断父节点是否有子节点
+        this.$set(tag, 'children', []) // 没有就加子节点
       }
       tag.children.push(newChild)
     },
-    remove(node, tag) {
+    remove(node, tag) { // 拿到删除节点的所有信息和删除节点
       const parent = node.parent
       const children = parent.data.children || parent.data
       const index = children.findIndex(d => d.id === tag.id)
