@@ -1,25 +1,25 @@
 <template>
-    <div id="app">
-        <top-nav-bar></top-nav-bar>
-        <div class="router">
-            <router-view/>
-        </div>
-
+  <div id="app">
+    <top-nav-bar />
+    <div class="router">
+      <router-view />
     </div>
+
+  </div>
 </template>
 
 <script>
 
-    import TopNavBar from "./components/topNavBar";
+import TopNavBar from './components/topNavBar'
 
-    export default {
-        name: 'app',
-        components: {
-            TopNavBar
+export default {
+  name: 'App',
+  components: {
+    TopNavBar
 
-        },
-        methods: {}
-    }
+  },
+  methods: {}
+}
 </script>
 
 <style scoped>

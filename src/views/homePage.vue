@@ -5,10 +5,7 @@
         <el-aside width="260px">
           <left-side-nav-menu />
         </el-aside>
-        <!--        <el-main>-->
-        <!--          <categories-detail />-->
-
-        <!--        </el-main>-->
+        <el-main><task-manage /></el-main>
       </el-container>
     </el-container>
   </div>
@@ -17,12 +14,12 @@
 <script>
 // import countDown from '../components/countDown';
 import leftSideNavMenu from '../components/leftSideNavMenu'
-// import CategoriesDetail from '../components/categoriesDetail'
+import TaskManage from '../components/taskManage'
 
 export default {
   name: 'HomePage',
   components: {
-    // CategoriesDetail,
+    TaskManage,
     leftSideNavMenu
   }
 }

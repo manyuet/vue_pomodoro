@@ -14,8 +14,9 @@
         node-key="id"
         default-expand-all
         :expand-on-click-node="false"
+        @node-click="handleNodeClick"
       >
-        <span slot-scope="{ node, data }" class="custom-tree-node">
+        <span slot-scope="{ node, data }" class="custom-tree-node"><!--slot-scope自定义树节点的内容，参数为 { node, data }-->
           <span>{{ node.label }}</span>
           <span class="node-button">
             <span class="icon-plus" @click="addTask(data)">
@@ -38,7 +39,29 @@ export default {
   data() {
     return {
       label: '',
-      tags: []
+      tags: [
+        {
+          label: '看书',
+          id: 1,
+          children: [
+            {
+              label: '技术类',
+              id: 2,
+              children: [
+                {
+                  label: 'java',
+                  id: 3
+                },
+                {
+                  label: 'c++',
+                  id: 4
+                }]
+            },
+            {
+              label: '文学类',
+              id: 5
+            }]
+        }]
     }
   },
   computed: {},
@@ -76,6 +99,25 @@ export default {
       const children = parent.data.children || parent.data
       const index = children.findIndex(d => d.id === tag.id)
       children.splice(index, 1)
+    },
+    handleNodeClick(data) {
+      const tags = this.extractSubTags(data)
+      this.$store.commit('chooseTag', tags)
+    },
+    extractSubTags(tag) {
+      const queue = [] // 广搜队列
+      const tags = [] // 存放提取出来的所有子标签
+      queue.push(tag) // 一开始，先把标签放进队列
+      while (queue.length > 0) { // 当队列不为空时，继续下列的操作
+        const subTag = queue.shift() // 取出当前队列的第一个标签
+        tags.push(subTag.label) // 把该标签的label属性，放进tags数组里
+        if (subTag.children) { // 如果拿出来的这个标签有子标签，那么把所有子标签依次放到队列的尾部
+          for (const child of subTag.children) {
+            queue.push(child)
+          }
+        }
+      }
+      return tags
     }
 
   }

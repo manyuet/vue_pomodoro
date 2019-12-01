@@ -5,18 +5,16 @@
         type="circle"
         :percentage="percentage"
         :width="200"
-      ></el-progress>
+      />
       <div>
-        <i class="el-icon-timer"></i>&nbsp;&nbsp;
-        <span
-          >{{ this.minutes }}&nbsp;&nbsp;{{ $t("m.minute") }}&nbsp;&nbsp;{{
-            this.seconds
-          }}&nbsp;&nbsp;{{ $t("m.second") }}</span
-        ><br />
-        <el-button @click="start" :disabled="displayStart">{{
+        <i class="el-icon-timer" />&nbsp;&nbsp;
+        <span>{{ this.minutes }}&nbsp;&nbsp;{{ $t("m.minute") }}&nbsp;&nbsp;{{
+          this.seconds
+        }}&nbsp;&nbsp;{{ $t("m.second") }}</span><br>
+        <el-button :disabled="displayStart" @click="start">{{
           $t("m.start")
         }}</el-button>
-        <el-button @click="stop" :disabled="displayEnd">{{
+        <el-button :disabled="displayEnd" @click="stop">{{
           $t("m.end")
         }}</el-button>
       </div>
@@ -26,7 +24,7 @@
 
 <script>
 export default {
-  name: "countDown",
+  name: 'CountDown',
   data() {
     return {
       startime: 1500,
@@ -37,30 +35,30 @@ export default {
       interval: null,
       percentage: 0,
       flag: 0
-    };
+    }
   },
   methods: {
     CountDown() {
       if (this.startime === 1200) {
-        this.percentage = 20;
+        this.percentage = 20
       }
       if (this.startime === 900) {
-        this.percentage = 40;
+        this.percentage = 40
       }
       if (this.startime === 600) {
-        this.percentage = 60;
+        this.percentage = 60
       }
       if (this.startime === 300) {
-        this.percentage = 80;
+        this.percentage = 80
       }
       if (this.startime === 0) {
-        this.percentage = 100;
+        this.percentage = 100
       }
       if (this.startime >= 0) {
-        this.minutes = Math.floor(this.startime / 60);
-        this.seconds = Math.floor(this.startime % 60);
-        --this.startime;
-        this.flag++;
+        this.minutes = Math.floor(this.startime / 60)
+        this.seconds = Math.floor(this.startime % 60)
+        --this.startime
+        this.flag++
         // if(this.flag%15===0){
         //     console.log(this.flag)
         //     this.percentage++
@@ -68,44 +66,44 @@ export default {
       }
     },
     start() {
-      this.displayStart = true;
-      this.displayEnd = false;
+      this.displayStart = true
+      this.displayEnd = false
       if (this.interval != null) {
-        clearInterval(this.interval);
-        this.interval = null;
+        clearInterval(this.interval)
+        this.interval = null
       }
-      this.interval = setInterval(this.CountDown, 1000);
+      this.interval = setInterval(this.CountDown, 1000)
     },
     stop() {
-      this.$confirm("此操作将结束番茄钟, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('此操作将结束番茄钟, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
           this.$message({
-            type: "warning",
-            message: "番茄钟无效!"
-          });
-          clearInterval(this.interval);
-          this.flag = 0;
-          this.percentage = 0;
-          this.interval = null;
-          this.displayStart = false;
-          this.displayEnd = true;
-          this.minutes = 25;
-          this.seconds = 0;
-          this.startime = 1500;
+            type: 'warning',
+            message: '番茄钟无效!'
+          })
+          clearInterval(this.interval)
+          this.flag = 0
+          this.percentage = 0
+          this.interval = null
+          this.displayStart = false
+          this.displayEnd = true
+          this.minutes = 25
+          this.seconds = 0
+          this.startime = 1500
         })
         .catch(() => {
           this.$message({
-            type: "success",
-            message: "继续"
-          });
-        });
+            type: 'success',
+            message: '继续'
+          })
+        })
     }
   }
-};
+}
 </script>
 
 <style scoped>
