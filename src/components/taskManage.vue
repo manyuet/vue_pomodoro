@@ -1,8 +1,15 @@
 <template>
   <div id="frame">
-    <div v-for="(task,index) in shouldShowTasks" :key="index">
+    <el-row>
+      <el-col :span="22">
+        <el-input v-model="taskName" placeholder="添加任务" /></el-col>
+      <el-col :span="2">
+        <el-button @click="submitTasks">submit</el-button></el-col>
+    </el-row>
+    <el-row class="tag-title">{{ tagOfTask }}</el-row>
+    <el-row v-for="(task,index) in shouldShowTasks" :key="index" class="task-row">
       {{ task.name }}
-    </div>
+    </el-row>
   </div>
 
 </template>
@@ -12,7 +19,13 @@ export default {
   name: 'TaskManage',
   data() {
     return {
+      tagOfTask: '',
       shouldShowTasks: [],
+      taskName: '',
+      newTask: {
+        name: '',
+        tag: ''
+      },
       allTasks: [
         {
           name: '看书的任务',
@@ -45,20 +58,30 @@ export default {
   },
   methods: {
     showTasks(shouldShowTags) {
+      this.tagOfTask = shouldShowTags[0]
       this.shouldShowTasks = this.allTasks.filter(task => shouldShowTags.includes(task.tag))
-
-      // this.shouldShowTasks = []
-      // for (let i = 0; i < shouldShowTags.length; i++) {
-      //   for (const task of this.allTasks) {
-      //     if (task.tag === shouldShowTags[i]) {
-      //       this.shouldShowTasks.push(task)
-      //     }
-      //   }
-      // }
+    },
+    submitTasks() {
+      this.newTask.name = this.taskName
+      this.newTask.tag = this.tagOfTask
+      this.allTasks.push(this.newTask)
+      this.shouldShowTasks.push(this.newTask)
+      this.taskName = ''
+      console.log(this.allTasks)
     }
   }
 }
 </script>
 
 <style scoped>
+  .tag-title{
+    line-height: 50px;
+    font-size: small;
+  }
+  .task-row{
+    background-color: white;
+    line-height: 40px;
+    border-radius: 10px;
+    margin-top: 5px;
+  }
 </style>
