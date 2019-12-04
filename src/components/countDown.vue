@@ -1,23 +1,59 @@
 <template>
   <div id="frame">
     <div class="countTime">
-      <el-progress
-        type="circle"
-        :percentage="percentage"
-        :width="200"
-      />
-      <div>
-        <i class="el-icon-timer" />&nbsp;&nbsp;
-        <span>{{ this.minutes }}&nbsp;&nbsp;{{ $t("m.minute") }}&nbsp;&nbsp;{{
-          this.seconds
-        }}&nbsp;&nbsp;{{ $t("m.second") }}</span><br>
-        <el-button :disabled="displayStart" @click="start">{{
-          $t("m.start")
-        }}</el-button>
-        <el-button :disabled="displayEnd" @click="stop">{{
-          $t("m.end")
-        }}</el-button>
-      </div>
+      <el-container>
+        <el-aside>
+          <el-row class="detail status">
+            <el-col :span="10"><span>状态</span></el-col>
+            <el-col :span="14"><span>{{ status }}</span></el-col>
+          </el-row>
+          <el-row class="detail pomodoro time">
+            <el-col :span="10">
+              <span>番茄钟时长</span>
+            </el-col>
+            <el-col :span="14">
+              <el-select v-model="pomodoroTime" placeholder="番茄钟时长" filterable clearable>
+                <el-option
+                  v-for="item in minutesOptions"
+                  :key="item"
+                  :label="item+' min'"
+                  :value="item"
+                />
+              </el-select>
+            </el-col>
+          </el-row>
+          <el-row class="detail relax time">
+            <el-col :span="10">
+              <span>休息时长</span>
+            </el-col>
+            <el-col :span="14">
+              <el-select v-model="relaxTime" placeholder="休息时长" filterable clearable> <!--   filterable可以手动输入，clearable清除-->
+                <el-option
+                  v-for="item in relaxMinutesOptions"
+                  :key="item"
+                  :label="item+' min'"
+                  :value="item"
+                />
+              </el-select>
+            </el-col>
+          </el-row>
+          <el-row class="detail pomodoro num">
+            <el-col :span="10"><span>番茄钟个数</span></el-col>
+            <el-col :span="14"><span>{{ pomodoroNum }}</span></el-col>
+          </el-row>
+          <el-row class="detail relax totalTime">
+            <el-col :span="10"><span>总休息时长</span></el-col>
+            <el-col :span="14"><span>{{ relaxTotalTime }}&nbsp;&nbsp;min</span></el-col>
+          </el-row>
+        </el-aside>
+        <el-main>
+          <el-progress type="circle" :percentage="progressPercentage" /><br>
+          <el-button :disabled="startBtn" @click="startPomodoro">start</el-button>
+          <el-button @click="stop">stop</el-button>
+          <el-button :disabled="relaxBtn" @click="startRelax">startRelax</el-button><br>
+          <span>{{ formatTime(currentSecond) }}</span>
+        </el-main>
+      </el-container>
     </div>
   </div>
 </template>
@@ -27,102 +63,155 @@ export default {
   name: 'CountDown',
   data() {
     return {
-      startime: 1500,
-      minutes: 25,
-      seconds: 0,
-      displayStart: false,
-      displayEnd: true,
-      interval: null,
-      percentage: 0,
-      flag: 0
+      pomodoroTime: '',
+      relaxTime: '',
+      minutesOptions: [],
+      relaxMinutesOptions: [],
+      progressPercentage: 0,
+      timer: null,
+      totalSecond: 0,
+      currentSecond: 0,
+      pomodoroNum: 0,
+      relaxTotalTime: 0,
+      status: '',
+      startBtn: false,
+      relaxBtn: false
+    }
+  },
+  created() {
+    for (let i = 5; i <= 120; i += 5) {
+      this.minutesOptions.push(i)
+    }
+    for (let i = 1; i <= 30; i++) {
+      this.relaxMinutesOptions.push(i)
     }
   },
   methods: {
-    CountDown() {
-      if (this.startime === 1200) {
-        this.percentage = 20
-      }
-      if (this.startime === 900) {
-        this.percentage = 40
-      }
-      if (this.startime === 600) {
-        this.percentage = 60
-      }
-      if (this.startime === 300) {
-        this.percentage = 80
-      }
-      if (this.startime === 0) {
-        this.percentage = 100
-      }
-      if (this.startime >= 0) {
-        this.minutes = Math.floor(this.startime / 60)
-        this.seconds = Math.floor(this.startime % 60)
-        --this.startime
-        this.flag++
-        // if(this.flag%15===0){
-        //     console.log(this.flag)
-        //     this.percentage++
-        // }
+    startPomodoro() {
+      if (!this.pomodoroTime) {
+        this.$message({
+          message: '请先制定番茄时长',
+          type: 'warning'
+        })
+      } else {
+        this.status = 'doing'
+        this.displayBtn()
+        this.currentSecond = 1
+        this.progressPercentage = 0
+        if (!this.timer) { // 先判断是否为空，防止重复执行
+          this.totalSecond = this.pomodoroTime * 60
+          // this.totalSecond = 3
+          this.timer = setInterval(() => {
+            this.progressPercentage = (this.currentSecond / this.totalSecond) * 100
+            if (this.progressPercentage === 100) {
+              this.pomodoroNum++
+              clearInterval(this.timer)
+              this.timer = null
+              this.$message({
+                message: '恭喜你完成番茄钟啦🍅！',
+                type: 'success'
+              })
+              return
+            }
+            this.currentSecond += 1
+          }, 1000)
+        }
       }
     },
-    start() {
-      this.displayStart = true
-      this.displayEnd = false
-      if (this.interval != null) {
-        clearInterval(this.interval)
-        this.interval = null
+    startRelax() {
+      if (!this.relaxTime) {
+        this.$message({
+          message: '请先制定休息时长',
+          type: 'warning'
+        })
+      } else {
+        this.status = 'relax'
+        this.displayBtn()
+        this.currentSecond = 1
+        this.progressPercentage = 0
+        if (!this.timer) { // 先判断是否为空，防止重复执行
+          this.totalSecond = this.relaxTime * 60
+          // this.totalSecond = 3
+          this.timer = setInterval(() => {
+            this.progressPercentage = (this.currentSecond / this.totalSecond) * 100
+            if (this.progressPercentage === 100) {
+              clearInterval(this.timer)
+              this.timer = null
+              this.relaxTotalTime += this.relaxTime
+              this.$message({
+                message: '休息时间到啦！',
+                type: 'success'
+              })
+              return
+            }
+            this.currentSecond += 1
+          }, 1000)
+        }
       }
-      this.interval = setInterval(this.CountDown, 1000)
     },
     stop() {
-      this.$confirm('此操作将结束番茄钟, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.$message({
-            type: 'warning',
-            message: '番茄钟无效!'
-          })
-          clearInterval(this.interval)
-          this.flag = 0
-          this.percentage = 0
-          this.interval = null
-          this.displayStart = false
-          this.displayEnd = true
-          this.minutes = 25
-          this.seconds = 0
-          this.startime = 1500
+      if (this.timer) {
+        if (this.status === 'doing') {
+          this.$message.error('这个番茄钟失效了')
+        } else {
+          this.$message('停止休息了')
+        }
+        this.status = ''
+        this.displayBtn()
+        clearInterval(this.timer)
+        this.timer = null
+        this.currentSecond = 0
+        this.progressPercentage = 0
+      } else {
+        this.$message({
+          message: '现在停止无效哦',
+          type: 'warning'
         })
-        .catch(() => {
-          this.$message({
-            type: 'success',
-            message: '继续'
-          })
-        })
+      }
+    },
+    formatTime(second) {
+      return Math.floor((second / 60)) + '分钟' + (second % 60) + '秒' // Math.floor向下取整
+    },
+    displayBtn() {
+      if (this.status === 'doing') {
+        this.startBtn = true
+        this.relaxBtn = true
+      } else if (this.status === 'relax') {
+        this.startBtn = true
+        this.relaxBtn = true
+      } else {
+        this.startBtn = false
+        this.relaxBtn = false
+      }
     }
   }
+
 }
 </script>
 
 <style scoped>
-/*/deep/.el-progress-circle{*/
-/*   width: 200px;*/
-/*    height: 200px;*/
-/*}*/
 #frame {
-  width: 1080px;
+  width: 100%;
   height: 900px;
-  margin-right: auto;
-  margin-left: auto;
   margin-top: 60px;
 }
-
 .countTime {
-  width: 600px;
-  margin-right: auto;
-  margin-left: auto;
   text-align: center;
 }
+  .el-aside{
+    width:400px;
+    height: 100%;
+    float: left;
+  }
+  .el-main{
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+  }
+  .detail{
+    line-height: 50px;
+  }
+  /deep/.el-progress__text{
+    display: none;
+  }
 </style>

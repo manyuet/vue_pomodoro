@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from './views/Login'
-import addTaskCard from './views/addTaskCard'
 import homePage from './views/homePage'
+import StartCount from './views/StartCount'
 
 Vue.use(VueRouter)
 
@@ -13,9 +13,9 @@ const routes = [{
   meta: { notRequireAuth: true }
 },
 {
-  path: '/addTaskCard',
-  name: 'addTaskCard',
-  component: addTaskCard,
+  path: '/startCount',
+  name: 'StartCount',
+  component: StartCount,
   meta: { notRequireAuth: true }
 },
 {

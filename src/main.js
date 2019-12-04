@@ -5,19 +5,13 @@ import router from './router.js'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Vuex from 'vuex'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from './store'
 import VueI18n from 'vue-i18n'
-import { faLanguage, faPlus, faPlusCircle, faSmile } from '@fortawesome/free-solid-svg-icons'
-import { faCircle } from '@fortawesome/free-solid-svg-icons/faCircle'
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons/faTrashAlt'
-import { faPenSquare } from '@fortawesome/free-solid-svg-icons/faPenSquare'
+
 import _ from 'lodash'
 Vue.prototype._ = _
-Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 
 Vue.use(VueI18n) // 通过插件的形式挂载，通过全局方法 Vue.use() 使用插件
@@ -29,22 +23,9 @@ const i18n = new VueI18n({
   }
 })
 
-library.add(
-  // font awesome
-  faLanguage,
-  faPlusCircle,
-  faSmile,
-  faCircle,
-  faTrashAlt,
-  faPenSquare,
-  faPlus,
-
-)
-
 Vue.use(ElementUI)
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
-Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 new Vue({
   render: h => h(App),

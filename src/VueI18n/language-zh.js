@@ -5,6 +5,10 @@ export const m = {
   end: '结束',
   minute: '分',
   second: '秒',
-  switchLanguage: '切换语言'
+  switchLanguage: '切换语言',
+  login: '登录',
+  register: '注册',
+  chinese: '中',
+  english: '英'
 
 }

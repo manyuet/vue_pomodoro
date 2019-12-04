@@ -19,11 +19,11 @@
         <span slot-scope="{ node, data }" class="custom-tree-node"><!--slot-scope自定义树节点的内容，参数为 { node, data }-->
           <span>{{ node.label }}</span>
           <span class="node-button">
-            <span class="icon-plus" @click="addTask(data)">
-              <font-awesome-icon :icon="['fas', 'plus']" />
+            <span @click="addTask(data)">
+              <i class="el-icon-plus" />
             </span>
             <span class="icon-trash" @click="() => remove(node, data)">
-              <font-awesome-icon :icon="['fas', 'trash-alt']" />
+              <i class="el-icon-delete" />
             </span>
           </span>
         </span>

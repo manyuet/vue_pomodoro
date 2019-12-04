@@ -5,5 +5,9 @@ export const m = {
   end: 'end',
   minute: 'minute',
   second: 'second',
-  switchLanguage: 'switchLanguage'
+  switchLanguage: 'switchLanguage',
+  login: 'login',
+  register: 'register',
+  chinese: 'Chinese',
+  english: 'English'
 }

@@ -7,9 +7,16 @@
         <el-button @click="submitTasks">submit</el-button></el-col>
     </el-row>
     <el-row class="tag-title">{{ tagOfTask }}</el-row>
-    <el-row v-for="(task,index) in shouldShowTasks" :key="index" class="task-row">
-      {{ task.name }}
-    </el-row>
+    <div v-for="(task,index) in shouldShowTasks" :key="index" @click="taskDetail(task)">
+      <el-row class="task-row">
+        <el-col :span="1" class="icon-play">
+          <i class="el-icon-video-play" @click="startCountTime(task)" />
+        </el-col>
+        <el-col :span="20">
+          {{ task.name }}
+        </el-col>
+      </el-row>
+    </div>
   </div>
 
 </template>
@@ -62,12 +69,25 @@ export default {
       this.shouldShowTasks = this.allTasks.filter(task => shouldShowTags.includes(task.tag))
     },
     submitTasks() {
-      this.newTask.name = this.taskName
-      this.newTask.tag = this.tagOfTask
-      this.allTasks.push(this.newTask)
-      this.shouldShowTasks.push(this.newTask)
-      this.taskName = ''
-      console.log(this.allTasks)
+      console.log(this.tagOfTask)
+      if (!this.tagOfTask) {
+        this.$message.error('请先选择左侧标签')
+      } else {
+        this.newTask.name = this.taskName
+        this.newTask.tag = this.tagOfTask
+        this.allTasks.push(this.newTask)
+        this.shouldShowTasks.push(this.newTask)
+        this.taskName = ''
+      }
+    },
+    startCountTime(task) {
+      this.$router.push({
+        name: 'StartCount',
+        params: task
+      })
+    },
+    taskDetail(task) {
+      this.$store.commit('selectTask', task)
     }
   }
 }
@@ -83,5 +103,8 @@ export default {
     line-height: 40px;
     border-radius: 10px;
     margin-top: 5px;
+  }
+  .icon-play{
+    margin-left: 10px;
   }
 </style>
