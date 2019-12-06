@@ -8,6 +8,14 @@
         <el-button @click="addTag">add</el-button>
       </el-col>
     </el-row>
+    <el-row class="today">
+      <el-col :span="3"><i class="el-icon-sunny" /></el-col>
+      <el-col :span="8"><span @click="clickTodayTag">今天</span></el-col>
+    </el-row>
+    <el-row class="tomorrow">
+      <el-col :span="3"><i class="el-icon-sunset" /></el-col>
+      <el-col :span="8"><span @click="clickTomorrowTag">明天</span></el-col>
+    </el-row>
     <el-row>
       <el-tree
         :data="tags"
@@ -39,6 +47,9 @@ export default {
   data() {
     return {
       label: '',
+      currentdate: '',
+      todayTasks: [],
+      tomorrowTasks: [],
       tags: [
         {
           label: '看书',
@@ -64,8 +75,38 @@ export default {
         }]
     }
   },
-  computed: {},
+  created() {
+    const date = new Date()
+    const seperator1 = '-'
+    const year = date.getFullYear()
+    let month = date.getMonth() + 1
+    let strDate = date.getDate()
+    if (month >= 1 && month <= 9) {
+      month = '0' + month
+    }
+    if (strDate >= 0 && strDate <= 9) {
+      strDate = '0' + strDate
+    }
+    this.currentdate = year + seperator1 + month + seperator1 + strDate
+    console.log(this.currentdate)
+    this.axios.get('http://mock-api.com/NnX4Gkny.mock/task?tag=today').then(response => {
+      this.todayTasks = response.data
+    }).catch(error => {
+      console.log(error)
+    })
+    this.axios.get('http://mock-api.com/NnX4Gkny.mock/task?tag=tomorrow').then(response => {
+      this.tomorrowTasks = response.data
+    }).catch(error => {
+      console.log(error)
+    })
+  },
   methods: {
+    clickTodayTag() {
+      this.$store.commit('selectTaskByDay', this.todayTasks)
+    },
+    clickTomorrowTag() {
+      this.$store.commit('selectTaskByDay', this.tomorrowTasks)
+    },
     addTag() {
       this.tags.push({ id: id++, label: this.label, children: [] })
       this.label = ''
@@ -131,9 +172,30 @@ export default {
 }
 
 .input-tag {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
   .node-button{
     float: right;
+  }
+  .el-icon-sunny{
+    margin-left: 6px;
+    font-size: 20px;
+  }
+  .el-icon-sunset{
+  margin-left: 6px;
+}
+  .today{
+    line-height:30px;
+    color: rgb(72,72,72);
+    font-size: 15px;
+  }
+  .tomorrow{
+  line-height:40px;
+    color: rgb(72,72,72);
+    border-bottom: #c5c5c5 1px solid;
+    font-size: 15px;
+  }
+  .el-tree{
+    margin-top: 10px;
   }
 </style>

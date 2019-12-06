@@ -1,6 +1,7 @@
 const state = {
   selectedTags: [],
   selectedTask: {},
+  selectedTaskByDay: [],
   displayRightTaskDetail: false
 }
 
@@ -17,6 +18,10 @@ const mutations = {
   },
   closeRight(state) {
     state.displayRightTaskDetail = false
+  },
+  selectTaskByDay(state, tasks) {
+    state.selectedTaskByDay = []
+    state.selectedTaskByDay = tasks
   }
 }
 

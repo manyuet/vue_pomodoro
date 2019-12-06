@@ -18,7 +18,7 @@
 <script>
 import leftSideNavMenu from '../components/leftSideNavMenu'
 import TaskManage from '../components/taskManage'
-import RightTaskDetail from './rightTaskDetail'
+import RightTaskDetail from '../components/rightTaskDetail'
 
 export default {
   name: 'HomePage',

@@ -28,6 +28,8 @@ export default {
     return {
       tagOfTask: '',
       shouldShowTasks: [],
+      todayTasks: [],
+      tomorrowTasks: [],
       taskName: '',
       newTask: {
         name: '',
@@ -36,19 +38,27 @@ export default {
       allTasks: [
         {
           name: '看书的任务',
-          tag: '看书'
+          tag: '看书',
+          pomodoroNum: 2,
+          endDate: '2019-12-4'
         },
         {
           name: '看java的任务',
-          tag: 'java'
+          tag: 'java',
+          pomodoroNum: 4,
+          endDate: '2019-12-4'
         },
         {
           name: '看文学类的任务',
-          tag: '文学类'
+          tag: '文学类',
+          pomodoroNum: 0,
+          endDate: '2019-12-3'
         },
         {
           name: '看B站',
-          tag: '娱乐的任务'
+          tag: '娱乐的任务',
+          pomodoroNum: 0,
+          endDate: '2019-12-2'
         }
       ]
     }
@@ -56,11 +66,17 @@ export default {
   computed: {
     shouldShowTags() { // 因为是数组computed没办法直接感应vuex里数组的变化，所以使用watch调用
       return this.$store.state.tasks.selectedTags
+    },
+    shouldShowTasksByDay() {
+      return this.$store.state.tasks.selectedTaskByDay
     }
   },
   watch: {
     shouldShowTags(tags) {
       this.showTasks(tags)
+    },
+    shouldShowTasksByDay() {
+      this.showTasksByDay()
     }
   },
   methods: {
@@ -68,8 +84,11 @@ export default {
       this.tagOfTask = shouldShowTags[0]
       this.shouldShowTasks = this.allTasks.filter(task => shouldShowTags.includes(task.tag))
     },
+    showTasksByDay() {
+      this.tagOfTask = ''
+      this.shouldShowTasks = this.shouldShowTasksByDay
+    },
     submitTasks() {
-      console.log(this.tagOfTask)
       if (!this.tagOfTask) {
         this.$message.error('请先选择左侧标签')
       } else {
