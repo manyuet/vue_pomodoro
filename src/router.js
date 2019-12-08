@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from './views/Login'
-import homePage from './views/homePage'
+import HomePage from './views/HomePage'
 import StartCount from './views/StartCount'
+import DataCharts from './views/DataCharts'
 
 Vue.use(VueRouter)
 
@@ -19,9 +20,15 @@ const routes = [{
   meta: { notRequireAuth: true }
 },
 {
+  path: '/dataCharts',
+  name: 'DataCharts',
+  component: DataCharts,
+  meta: { notRequireAuth: true }
+},
+{
   path: '/',
   name: 'home',
-  component: homePage,
+  component: HomePage,
   meta: { notRequireAuth: true }
 }]
 const router = new VueRouter({

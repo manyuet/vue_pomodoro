@@ -10,6 +10,7 @@
         <span @click="addTaskCard">
           <i class="el-icon-plus" />
         </span>
+        <span @click="dataCharts"><i class="el-icon-s-data" /></span>
         <el-switch
           v-model="value1"
           :active-text="$t('m.chinese')"
@@ -37,6 +38,9 @@ export default {
     },
     addTaskCard() {
       this.$router.push('/addTaskCard')
+    },
+    dataCharts() {
+      this.$router.push('/dataCharts')
     }
   }
 }
@@ -57,6 +61,10 @@ export default {
   .el-icon-plus{
     margin-left: 10px;
     font-size: 20px;
+  }
+  .el-icon-s-data{
+    font-size: 20px;
+    margin-left: 10px;
   }
 
 </style>

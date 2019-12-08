@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import leftSideNavMenu from '../components/leftSideNavMenu'
-import TaskManage from '../components/taskManage'
-import RightTaskDetail from '../components/rightTaskDetail'
+import leftSideNavMenu from '../components/LeftSideNavMenu'
+import TaskManage from '../components/TaskManage'
+import RightTaskDetail from '../components/RightTaskDetail'
 
 export default {
   name: 'HomePage',

@@ -9,7 +9,7 @@
 
 <script>
 
-import TopNavBar from './components/topNavBar'
+import TopNavBar from './components/TopNavBar'
 
 export default {
   name: 'App',

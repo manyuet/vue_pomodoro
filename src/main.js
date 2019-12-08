@@ -9,6 +9,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from './store'
 import VueI18n from 'vue-i18n'
+import VCharts from 'v-charts'
 
 import _ from 'lodash'
 Vue.prototype._ = _
@@ -26,6 +27,7 @@ const i18n = new VueI18n({
 Vue.use(ElementUI)
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
+Vue.use(VCharts)
 
 new Vue({
   render: h => h(App),
